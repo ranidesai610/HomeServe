@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Provider Dashboard";
+}
+
+<div class="container mt-4">
+
+    <h1 class="mb-2">Provider Dashboard</h1>
+
+    <p class="text-muted">
+        Welcome to the Home Service Management System
+    </p>
+
+    <hr />
+
+    <div class="row mt-4">
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h4>My Bookings</h4>
+                    <p>View customer service bookings.</p>
+
+                    <a asp-controller="Bookings"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        View Bookings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h4>Availability</h4>
+                    <p>Manage your available dates and times.</p>
+
+                    <a asp-controller="ProviderAvailabilities"
+                       asp-action="Index"
+                       class="btn btn-success">
+                        Manage Availability
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h4>My Profile</h4>
+                    <p>View your provider information.</p>
+
+                    <a asp-controller="ServiceProviders"
+                       asp-action="Index"
+                       class="btn btn-secondary">
+                        View Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

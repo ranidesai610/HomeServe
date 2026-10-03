@@ -1,0 +1,217 @@
+@model IEnumerable<HomeServiceManagementSystem.Models.Booking>
+
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<style>
+    .bookings-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .bookings-header {
+        background: linear-gradient(135deg, #0d6efd, #4f8df7);
+        color: white;
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 30px;
+    }
+
+    .bookings-header h1 {
+        font-weight: 800;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+        margin-bottom: 20px;
+        transition: 0.3s;
+    }
+
+    .booking-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 32px rgba(0,0,0,0.10);
+    }
+
+    .service-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 17px;
+        background: #eaf2ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+    }
+
+    .service-name {
+        font-size: 21px;
+        font-weight: 800;
+        color: #172033;
+    }
+
+    .provider-name {
+        color: #6c757d;
+        margin-top: 4px;
+    }
+
+    .booking-info {
+        color: #555;
+        margin-top: 10px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 7px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .amount {
+        font-size: 20px;
+        font-weight: 800;
+        color: #0d6efd;
+    }
+
+    .view-btn {
+        border-radius: 10px;
+        padding: 9px 18px;
+        font-weight: 600;
+    }
+
+    .empty-box {
+        background: white;
+        border-radius: 22px;
+        padding: 60px 20px;
+        text-align: center;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+    }
+
+    .empty-icon {
+        font-size: 55px;
+    }
+</style>
+
+<div class="container bookings-page">
+
+    <div class="bookings-header">
+
+        <h1>📋 My Bookings</h1>
+
+        <p class="mb-0 mt-2">
+            View and manage your home service bookings.
+        </p>
+
+    </div>
+
+
+    @if (!Model.Any())
+    {
+        <div class="empty-box">
+
+            <div class="empty-icon">
+                📅
+            </div>
+
+            <h3 class="fw-bold mt-3">
+                No bookings yet
+            </h3>
+
+            <p class="text-muted">
+                You haven't booked any home services yet.
+            </p>
+
+            <a asp-controller="CustomerServices"
+               asp-action="Index"
+               class="btn btn-primary">
+
+                Browse Services →
+
+            </a>
+
+        </div>
+    }
+    else
+    {
+        @foreach (var booking in Model)
+        {
+            <div class="booking-card">
+
+                <div class="row align-items-center">
+
+                    <div class="col-md-1">
+
+                        <div class="service-icon">
+                            🏠
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="service-name">
+                            @booking.Service?.Name
+                        </div>
+
+                        <div class="provider-name">
+                            👨‍🔧
+                            @booking.ServiceProvider?.User?.Name
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-3">
+
+                        <div class="booking-info">
+                            📅
+                            @booking.BookingDate.ToString("dd MMM yyyy")
+                        </div>
+
+                        <div class="booking-info">
+                            🕐
+                            @booking.BookingTime
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-2">
+
+                        <div class="status-badge">
+                            @booking.Status
+                        </div>
+
+                        <div class="amount mt-2">
+                            ₹@booking.TotalAmount.ToString("N2")
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-2 text-md-end mt-3 mt-md-0">
+
+                        <a asp-action="Details"
+                           asp-route-id="@booking.Id"
+                           class="btn btn-primary view-btn">
+
+                            View Details →
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    }
+
+</div>

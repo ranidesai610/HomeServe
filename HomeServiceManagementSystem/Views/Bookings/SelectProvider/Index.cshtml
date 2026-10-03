@@ -1,0 +1,133 @@
+﻿@model HomeServiceManagementSystem.Models.ServiceProvider
+
+@{
+    ViewData["Title"] = "Select Provider";
+}
+
+<style>
+    .select-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .select-header {
+        background: linear-gradient(135deg, #0d6efd, #4f8df7);
+        color: white;
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 30px;
+    }
+
+    .provider-box {
+        background: white;
+        border-radius: 22px;
+        padding: 35px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    .provider-icon {
+        width: 75px;
+        height: 75px;
+        border-radius: 20px;
+        background: #eaf2ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+        margin-bottom: 20px;
+    }
+
+    .provider-name {
+        font-size: 28px;
+        font-weight: 800;
+        color: #172033;
+    }
+
+    .info-box {
+        background: #f7f9fc;
+        border-radius: 14px;
+        padding: 16px;
+        margin-top: 15px;
+    }
+
+    .continue-btn {
+        width: 100%;
+        padding: 13px;
+        border-radius: 12px;
+        font-weight: 700;
+        margin-top: 25px;
+    }
+</style>
+
+<div class="container select-page">
+
+    <div class="select-header">
+        <h1 class="fw-bold">
+            Provider Selected ✓
+        </h1>
+
+        <p class="mb-0">
+            Please review the provider details before continuing.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="provider-box">
+
+                <div class="provider-icon">
+                    👨‍🔧
+                </div>
+
+                <div class="provider-name">
+                    @(Model.User?.Name ?? "Service Provider")
+                </div>
+
+                <div class="info-box">
+                    📞 <strong>Phone:</strong>
+                    @Model.Phone
+                </div>
+
+                <div class="info-box">
+                    📍 <strong>Address:</strong>
+                    @Model.Address
+                </div>
+
+                <div class="info-box">
+                    📅 <strong>Booking Date:</strong>
+                    @ViewBag.BookingDate
+                </div>
+
+                <div class="info-box">
+                    🕐 <strong>Booking Time:</strong>
+                    @ViewBag.BookingTime
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(ViewBag.Description))
+                {
+                    <div class="info-box">
+                        📝 <strong>Description:</strong>
+                        @ViewBag.Description
+                    </div>
+                }
+                <a asp-controller="Bookings"
+   asp-action="Address"
+   asp-route-providerId="@ViewBag.ProviderId"
+   asp-route-serviceId="@ViewBag.ServiceId"
+   asp-route-bookingDate="@ViewBag.BookingDate"
+   asp-route-bookingTime="@ViewBag.BookingTime"
+   asp-route-description="@ViewBag.Description"
+   class="btn btn-primary continue-btn">
+    Continue to Address →
+</a>
+               
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

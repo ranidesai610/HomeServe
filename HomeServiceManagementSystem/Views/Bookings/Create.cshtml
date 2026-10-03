@@ -1,0 +1,220 @@
+@model HomeServiceManagementSystem.Models.Service
+
+@{
+    ViewData["Title"] = "Book Service";
+}
+
+<style>
+    .booking-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .booking-header {
+        background: linear-gradient(135deg, #0d6efd, #4f8df7);
+        color: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 35px;
+    }
+
+    .booking-header h1 {
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .service-summary {
+        background: #f5f9ff;
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+
+    .service-name {
+        font-size: 25px;
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .service-price {
+        color: #0d6efd;
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #172033;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 12px 15px;
+        border: 1px solid #dee2e6;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+        border-color: #0d6efd;
+    }
+
+    .continue-btn {
+        padding: 13px 30px;
+        border-radius: 12px;
+        font-weight: 700;
+    }
+
+    .back-btn {
+        padding: 13px 25px;
+        border-radius: 12px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container booking-page">
+
+    <div class="booking-card">
+
+        <div class="booking-header">
+            <h1>Book Your Service</h1>
+            <p class="mb-0">
+                Choose a convenient date and time for your home service.
+            </p>
+        </div>
+
+        <div class="service-summary">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-8">
+                    <small class="text-muted">
+                        Selected Service
+                    </small>
+
+                    <div class="service-name mt-1">
+                        @Model.Name
+                    </div>
+
+                    <p class="text-muted mb-0 mt-2">
+                        @Model.Description
+                    </p>
+                </div>
+
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+                    <small class="text-muted">
+                        Starting Price
+                    </small>
+
+                    <div class="service-price">
+                        ₹@Model.Price.ToString("0")
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <h4 class="fw-bold mb-4">
+            Select Date & Time
+        </h4>
+
+        <form asp-action="Create" method="post">
+
+            <input type="hidden"
+                   name="ServiceId"
+                   value="@Model.Id" />
+
+            <input type="hidden"
+                   name="TotalAmount"
+                   value="@Model.Price" />
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Service Date
+                    </label>
+
+                    <input type="date"
+                           name="BookingDate"
+                           class="form-control"
+                           required />
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">
+                        Preferred Time
+                    </label>
+
+                    <input type="time"
+                           name="BookingTime"
+                           class="form-control"
+                           required />
+
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+
+                <label class="form-label">
+                    Service Description
+                </label>
+
+                <textarea class="form-control"
+                          name="Description"
+                          rows="4"
+                          placeholder="Tell us what service you need..."></textarea>
+
+            </div>
+
+            <div class="mt-4">
+
+                <label class="form-label">
+                    Booking Status
+                </label>
+
+                <input type="text"
+                       class="form-control"
+                       value="Pending"
+                       readonly />
+
+                <input type="hidden"
+                       name="Status"
+                       value="Pending" />
+
+            </div>
+
+            <div class="d-flex gap-3 mt-5">
+
+                <a asp-controller="CustomerServices"
+                   asp-action="Details"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-outline-secondary back-btn">
+                    ← Back
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary continue-btn">
+                    Continue →
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

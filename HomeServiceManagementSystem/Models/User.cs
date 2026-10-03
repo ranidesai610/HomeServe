@@ -1,0 +1,32 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HomeServiceManagementSystem.Models
+{
+    public class User
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public string Password { get; set; }
+
+        [Required]
+        public string Role { get; set; }
+
+        public ICollection<Address>? Addresses { get; set; }
+
+        public ICollection<Booking>? Bookings { get; set; }
+
+        public ICollection<Review>? Reviews { get; set; }
+
+        public ICollection<Complaint>? Complaints { get; set; }
+
+        public ICollection<Notification>? Notifications { get; set; }
+    }
+}

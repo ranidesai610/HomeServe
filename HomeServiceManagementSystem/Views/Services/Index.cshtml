@@ -1,0 +1,36 @@
+﻿@model List<HomeServiceManagementSystem.Models.Service>
+
+<h1>Available Services</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var service in Model)
+        {
+            <tr>
+                <td>@service.Id</td>
+                <td>@service.Name</td>
+                <td>@service.Description</td>
+                <td>₹@service.Price</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@service.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@service.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@service.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,187 @@
+﻿@{
+    ViewData["Title"] = "Service Address";
+}
+
+<style>
+    .address-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .address-header {
+        background: linear-gradient(135deg, #0d6efd, #4f8df7);
+        color: white;
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 30px;
+    }
+
+    .address-card {
+        background: white;
+        border-radius: 22px;
+        padding: 35px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #172033;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 12px 14px;
+    }
+
+    .continue-btn {
+        width: 100%;
+        padding: 13px;
+        border-radius: 12px;
+        font-weight: 700;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container address-page">
+
+    <div class="address-header">
+        <h1 class="fw-bold">
+            📍 Service Address
+        </h1>
+
+        <p class="mb-0 mt-2">
+            Enter the address where you need the service.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="address-card">
+
+                <form asp-controller="Bookings"
+                      asp-action="Confirm"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="providerId"
+                           value="@ViewBag.ProviderId" />
+
+                    <input type="hidden"
+                           name="serviceId"
+                           value="@ViewBag.ServiceId" />
+
+                    <input type="hidden"
+                           name="bookingDate"
+                           value="@ViewBag.BookingDate" />
+
+                    <input type="hidden"
+                           name="bookingTime"
+                           value="@ViewBag.BookingTime" />
+
+                    <input type="hidden"
+                           name="description"
+                           value="@ViewBag.Description" />
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            House / Flat Number
+                        </label>
+
+                        <input type="text"
+                               name="houseNumber"
+                               class="form-control"
+                               placeholder="Example: 12-A"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Street
+                        </label>
+
+                        <input type="text"
+                               name="street"
+                               class="form-control"
+                               placeholder="Enter street name"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Area
+                        </label>
+
+                        <input type="text"
+                               name="area"
+                               class="form-control"
+                               placeholder="Enter area"
+                               required />
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                City
+                            </label>
+
+                            <input type="text"
+                                   name="city"
+                                   class="form-control"
+                                   placeholder="Enter city"
+                                   required />
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                State
+                            </label>
+
+                            <input type="text"
+                                   name="state"
+                                   class="form-control"
+                                   placeholder="Enter state"
+                                   required />
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Pincode
+                        </label>
+
+                        <input type="text"
+                               name="pincode"
+                               class="form-control"
+                               placeholder="Enter 6-digit pincode"
+                               maxlength="6"
+                               required />
+
+                    </div>
+
+                    <button type="submit"
+                            class="btn btn-primary continue-btn">
+
+                        Continue to Review →
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

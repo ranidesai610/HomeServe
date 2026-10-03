@@ -1,0 +1,351 @@
+@model HomeServiceManagementSystem.Models.Booking
+
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+<style>
+    .booking-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .success-header {
+        background: linear-gradient(135deg, #0d6efd, #4f8df7);
+        color: white;
+        border-radius: 24px;
+        padding: 45px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255,255,255,0.18);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 40px;
+    }
+
+    .success-header h1 {
+        font-weight: 800;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 22px;
+        padding: 30px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #172033;
+        margin-bottom: 20px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 14px 0;
+        border-bottom: 1px solid #eef1f5;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    .info-value {
+        color: #172033;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .status-badge {
+        display: inline-block;
+        background: #fff3cd;
+        color: #856404;
+        padding: 7px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .amount-box {
+        background: #eaf2ff;
+        border-radius: 16px;
+        padding: 22px;
+        text-align: center;
+    }
+
+    .amount-label {
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    .amount {
+        color: #0d6efd;
+        font-size: 32px;
+        font-weight: 800;
+        margin-top: 5px;
+    }
+
+    .action-btn {
+        border-radius: 12px;
+        padding: 12px 22px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container booking-page">
+
+    <div class="success-header">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>Booking Confirmed!</h1>
+
+        <p class="mb-0 mt-2">
+            Your service booking has been successfully created.
+        </p>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-7">
+
+            <div class="booking-card">
+
+                <div class="card-title">
+                    🏠 Your Service
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Service
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Service?.Name
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Service Provider
+                    </span>
+
+                    <span class="info-value">
+                        @Model.ServiceProvider?.User?.Name
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Date
+                    </span>
+
+                    <span class="info-value">
+                        @Model.BookingDate.ToString("dd MMM yyyy")
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Time
+                    </span>
+
+                    <span class="info-value">
+                        @Model.BookingTime
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Booking Status
+                    </span>
+
+                    <span class="info-value">
+
+                        <span class="status-badge">
+                            @Model.Status
+                        </span>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="booking-card">
+
+                <div class="card-title">
+                    📍 Service Address
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        House / Flat
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Address?.HouseNumber
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Street
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Address?.Street
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Area
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Address?.Area
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        City
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Address?.City
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        State
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Address?.State
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Pincode
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Address?.Pincode
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-5">
+
+            <div class="booking-card">
+
+                <div class="card-title">
+                    💰 Payment Summary
+                </div>
+
+                <div class="amount-box">
+
+                    <div class="amount-label">
+                        Total Amount
+                    </div>
+
+                    <div class="amount">
+                        ₹@Model.TotalAmount.ToString("N2")
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <div class="booking-card">
+
+                    <div class="card-title">
+                        📝 Service Description
+                    </div>
+
+                    <p class="text-muted mb-0">
+                        @Model.Description
+                    </p>
+
+                </div>
+            }
+
+
+            <div class="booking-card">
+
+                <a asp-controller="CustomerServices"
+                   asp-action="Index"
+                   class="btn btn-primary action-btn w-100">
+
+                    ← Browse More Services
+
+                </a>
+
+                <a asp-controller="Bookings"
+                   asp-action="Index"
+                   class="btn btn-outline-secondary action-btn w-100 mt-3">
+
+                    📋 View My Bookings
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

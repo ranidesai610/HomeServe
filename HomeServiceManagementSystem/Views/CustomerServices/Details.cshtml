@@ -1,0 +1,193 @@
+﻿@model HomeServiceManagementSystem.Models.Service
+
+@{
+    ViewData["Title"] = "Service Details";
+
+    string icon = Model.Name switch
+    {
+        "Plumbing" => "🔧",
+        "Electrical" => "⚡",
+        "AC Repair" => "❄️",
+        "Home Cleaning" => "🧹",
+        "Painting" => "🎨",
+        "Carpentry" => "🪚",
+        "Pest Control" => "🐜",
+        "Appliance Repair" => "🔌",
+        _ => "🏠"
+    };
+}
+
+<style>
+    .details-wrapper {
+        margin-top: 45px;
+        margin-bottom: 60px;
+    }
+
+    .service-detail-card {
+        background: white;
+        border-radius: 25px;
+        padding: 45px;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .service-icon-large {
+        width: 110px;
+        height: 110px;
+        border-radius: 28px;
+        background: #eaf2ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 55px;
+        margin-bottom: 25px;
+    }
+
+    .category-badge {
+        display: inline-block;
+        background: #eef4ff;
+        color: #0d6efd;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .service-title {
+        font-size: 42px;
+        font-weight: 800;
+        color: #172033;
+        margin-top: 18px;
+    }
+
+    .service-description {
+        color: #6c757d;
+        font-size: 17px;
+        line-height: 1.8;
+    }
+
+    .price-box {
+        background: #f5f9ff;
+        border-radius: 18px;
+        padding: 22px;
+        margin-top: 30px;
+    }
+
+    .price-label {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .price {
+        color: #0d6efd;
+        font-size: 32px;
+        font-weight: 800;
+    }
+
+    .feature-box {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 18px;
+        margin-top: 15px;
+    }
+
+    .feature-icon {
+        font-size: 24px;
+        margin-right: 12px;
+    }
+
+    .book-btn {
+        padding: 13px 28px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .back-btn {
+        border-radius: 12px;
+        padding: 12px 22px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container details-wrapper">
+
+    <div class="service-detail-card">
+
+        <div class="service-icon-large">
+            @icon
+        </div>
+
+        <span class="category-badge">
+            @(Model.ServiceCategory?.Name ?? "Home Service")
+        </span>
+
+        <h1 class="service-title">
+            @Model.Name
+        </h1>
+
+        <p class="service-description mt-4">
+            @Model.Description
+        </p>
+
+        <div class="price-box">
+            <div class="price-label">
+                Starting from
+            </div>
+
+            <div class="price">
+                ₹@Model.Price.ToString("0")
+            </div>
+        </div>
+
+        <div class="row mt-4">
+
+            <div class="col-md-6">
+                <div class="feature-box">
+                    <span class="feature-icon">👨‍🔧</span>
+                    Professional Service Providers
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="feature-box">
+                    <span class="feature-icon">📅</span>
+                    Flexible Booking
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="feature-box">
+                    <span class="feature-icon">🛡️</span>
+                    Trusted Home Service
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="feature-box">
+                    <span class="feature-icon">💳</span>
+                    Secure Payment
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-5 d-flex gap-3 flex-wrap">
+
+            <a asp-controller="CustomerServices"
+               asp-action="Index"
+               class="btn btn-outline-secondary back-btn">
+                ← Back to Services
+            </a>
+
+           <a asp-controller="Bookings"
+   asp-action="Create"
+   asp-route-serviceId="@Model.Id"
+   class="btn btn-primary book-btn">
+    📅 Book This Service
+</a>
+
+        </div>
+
+    </div>
+
+</div>

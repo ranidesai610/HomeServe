@@ -1,0 +1,818 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<style>
+    body {
+        background: #f7f9fc;
+    }
+
+    /* HERO */
+    .hero-section {
+        background: linear-gradient(135deg, #0d6efd 0%, #4f8df7 100%);
+        border-radius: 28px;
+        margin-top: 30px;
+        padding: 70px 60px;
+        color: white;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 15px 40px rgba(13, 110, 253, 0.20);
+    }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+            right: -80px;
+            top: -100px;
+        }
+
+    .hero-title {
+        font-size: 52px;
+        font-weight: 800;
+        line-height: 1.15;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-text {
+        font-size: 18px;
+        line-height: 1.7;
+        max-width: 650px;
+        opacity: 0.95;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-buttons {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-image {
+        font-size: 150px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* SECTION */
+    .section-title {
+        font-weight: 800;
+        color: #172033;
+    }
+
+    .section-subtitle {
+        color: #6c757d;
+        font-size: 17px;
+    }
+
+    /* SERVICES */
+    .service-card {
+        background: white;
+        border: none;
+        border-radius: 20px;
+        padding: 28px;
+        height: 100%;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+    }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.10);
+        }
+
+    .service-icon {
+        width: 65px;
+        height: 65px;
+        border-radius: 18px;
+        background: #eaf2ff;
+        color: #0d6efd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+
+    .service-card h5 {
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .service-card p {
+        color: #6c757d;
+        line-height: 1.6;
+    }
+
+    /* HOW IT WORKS */
+    .step-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px 20px;
+        text-align: center;
+        height: 100%;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .step-number {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background: #0d6efd;
+        color: white;
+        font-size: 22px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 18px;
+    }
+
+    .step-card h5 {
+        font-weight: 700;
+    }
+
+    .step-card p {
+        color: #6c757d;
+    }
+
+    /* STATS */
+    .stats-section {
+        background: white;
+        border-radius: 22px;
+        padding: 35px 20px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+    }
+
+    .stat-number {
+        color: #0d6efd;
+        font-size: 34px;
+        font-weight: 800;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 15px;
+    }
+
+    /* WHY US */
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        height: 100%;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .feature-icon {
+        width: 55px;
+        height: 55px;
+        border-radius: 15px;
+        background: #eaf2ff;
+        color: #0d6efd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        margin-bottom: 18px;
+    }
+
+    .feature-card h5 {
+        font-weight: 700;
+    }
+
+    .feature-card p {
+        color: #6c757d;
+    }
+
+    /* CTA */
+    .cta-section {
+        background: linear-gradient(135deg, #172033, #263a5e);
+        border-radius: 25px;
+        padding: 55px 40px;
+        color: white;
+        text-align: center;
+    }
+
+        .cta-section h2 {
+            font-weight: 800;
+        }
+
+        .cta-section p {
+            color: #d8deea;
+            font-size: 17px;
+        }
+
+    /* RESPONSIVE */
+    @@media (max-width: 768px) {
+
+        .hero-section {
+            padding: 45px 25px;
+        }
+
+        .hero-title {
+            font-size: 38px;
+        }
+
+        .hero-image {
+            font-size: 100px;
+            margin-top: 30px;
+        }
+    }
+</style>
+
+
+<div class="container">
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero-section">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+                <h1 class="hero-title">
+                    Reliable Home Services,
+                    <br />
+                    At Your Doorstep.
+                </h1>
+
+                <p class="hero-text mt-4">
+                    From plumbing and electrical work to cleaning,
+                    painting and appliance repair, find trusted professionals
+                    for all your home service needs.
+                </p>
+
+                <div class="hero-buttons mt-4">
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="btn btn-light btn-lg px-4 me-2">
+                        Browse Services
+                    </a>
+
+                    <a asp-controller="Login"
+                       asp-action="Index"
+                       class="btn btn-outline-light btn-lg px-4">
+                        Login
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="hero-image">
+                    🏠
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SERVICES ================= -->
+
+    <section id="how-it-works" class="mt-5 pt-5">
+
+        <div class="text-center mb-5">
+
+            <h2 class="section-title">
+                Our Services
+            </h2>
+
+            <p class="section-subtitle">
+                Everything you need to maintain and improve your home
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- Plumbing -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        🔧
+                    </div>
+
+                    <h5>Plumbing</h5>
+
+                    <p>
+                        Professional plumbing repair and maintenance
+                        for your home.
+                    </p>
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="text-primary text-decoration-none fw-semibold">
+                        Explore →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Electrical -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        ⚡
+                    </div>
+
+                    <h5>Electrical</h5>
+
+                    <p>
+                        Reliable electrical installation,
+                        repair and maintenance services.
+                    </p>
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="text-primary text-decoration-none fw-semibold">
+                        Explore →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- AC -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        ❄️
+                    </div>
+
+                    <h5>AC Repair</h5>
+
+                    <p>
+                        Fast AC repair and maintenance
+                        by experienced professionals.
+                    </p>
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="text-primary text-decoration-none fw-semibold">
+                        Explore →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Cleaning -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        🧹
+                    </div>
+
+                    <h5>Home Cleaning</h5>
+
+                    <p>
+                        Professional cleaning services
+                        to keep your home fresh.
+                    </p>
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="text-primary text-decoration-none fw-semibold">
+                        Explore →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Appliance -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        🔌
+                    </div>
+
+                    <h5>Appliance Repair</h5>
+
+                    <p>
+                        Repair and maintenance for
+                        your household appliances.
+                    </p>
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="text-primary text-decoration-none fw-semibold">
+                        Explore →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Pest Control -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        🐜
+                    </div>
+
+                    <h5>Pest Control</h5>
+
+                    <p>
+                        Effective pest control solutions
+                        for a cleaner and safer home.
+                    </p>
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="text-primary text-decoration-none fw-semibold">
+                        Explore →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Painting -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        🎨
+                    </div>
+
+                    <h5>Painting</h5>
+
+                    <p>
+                        Give your home a fresh look with
+                        professional painting services.
+                    </p>
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="text-primary text-decoration-none fw-semibold">
+                        Explore →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Carpentry -->
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="service-card">
+
+                    <div class="service-icon">
+                        🪚
+                    </div>
+
+                    <h5>Carpentry</h5>
+
+                    <p>
+                        Furniture repair and custom
+                        carpentry services for your home.
+                    </p>
+
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="text-primary text-decoration-none fw-semibold">
+                        Explore →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section class="mt-5 pt-5">
+
+        <div class="text-center mb-5">
+
+            <h2 class="section-title">
+                How It Works
+            </h2>
+
+            <p class="section-subtitle">
+                Book a professional in just a few simple steps
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <div class="col-md-3">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <h5>Choose Service</h5>
+
+                    <p>
+                        Select the service you need for your home.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <h5>Select Date & Time</h5>
+
+                    <p>
+                        Choose a convenient date and available time.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <h5>Choose Provider</h5>
+
+                    <p>
+                        Select an approved provider available for your service.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        4
+                    </div>
+
+                    <h5>Confirm Booking</h5>
+
+                    <p>
+                        Confirm your details and book the service.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <section class="mt-5 pt-5">
+
+        <div class="stats-section">
+
+            <div class="row text-center">
+
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+
+                    <div class="stat-number">
+                        500+
+                    </div>
+
+                    <div class="stat-label">
+                        Happy Customers
+                    </div>
+
+                </div>
+
+
+                <div class="col-6 col-md-3 mb-4 mb-md-0">
+
+                    <div class="stat-number">
+                        50+
+                    </div>
+
+                    <div class="stat-label">
+                        Professionals
+                    </div>
+
+                </div>
+
+
+                <div class="col-6 col-md-3">
+
+                    <div class="stat-number">
+                        8
+                    </div>
+
+                    <div class="stat-label">
+                        Home Services
+                    </div>
+
+                </div>
+
+
+                <div class="col-6 col-md-3">
+
+                    <div class="stat-number">
+                        1000+
+                    </div>
+
+                    <div class="stat-label">
+                        Bookings Completed
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= WHY CHOOSE US ================= -->
+
+    <section class="mt-5 pt-5">
+
+        <div class="text-center mb-5">
+
+            <h2 class="section-title">
+                Why Choose Our Platform?
+            </h2>
+
+            <p class="section-subtitle">
+                Designed to make home service booking simple
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <h5>Verified Providers</h5>
+
+                    <p>
+                        Connect with approved and reliable
+                        service professionals.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📅
+                    </div>
+
+                    <h5>Flexible Scheduling</h5>
+
+                    <p>
+                        Choose dates and times that
+                        work for you.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        💰
+                    </div>
+
+                    <h5>Transparent Pricing</h5>
+
+                    <p>
+                        Know the service price before
+                        confirming your booking.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🔒
+                    </div>
+
+                    <h5>Secure Booking</h5>
+
+                    <p>
+                        Manage bookings, payments and
+                        invoices in one place.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CTA ================= -->
+
+    <section class="cta-section mt-5 mb-5">
+
+        <h2>
+            Need a Service at Home?
+        </h2>
+
+        <p class="mt-3">
+            Find a trusted professional and book your service today.
+        </p>
+
+        <a asp-controller="CustomerServices"
+           asp-action="Index"
+           class="btn btn-primary btn-lg px-5 mt-3">
+            Book a Service
+        </a>
+
+    </section>
+
+</div>
