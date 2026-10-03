@@ -12,18 +12,32 @@ public class ProviderAvailabilitiesController : Controller
         _context = context;
     }
 
-    // GET: ProviderAvailabilities
+    // View my availability
     public async Task<IActionResult> Index()
     {
-        var availabilities = await _context.ProviderAvailabilities
-            .Include(p => p.ServiceProvider)
-                .ThenInclude(sp => sp.User)
-            .ToListAsync();
+        int? providerUserId = HttpContext.Session.GetInt32("UserId");
 
+        if (providerUserId == null)
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var provider = await _context.ServiceProviders
+            .FirstOrDefaultAsync(sp => sp.UserId == providerUserId.Value);
+
+        if (provider == null)
+        {
+            return NotFound();
+        }
+        var availabilities = await _context.ProviderAvailabilities
+            .Where(pa => pa.ServiceProviderId == provider.Id)
+            .Include(pa => pa.ServiceProvider)
+                .ThenInclude(sp => sp.User)
+            .OrderBy(pa => pa.DayOfWeek)
+            .ToListAsync();
         return View(availabilities);
     }
 
-    // GET: ProviderAvailabilities/Details/5
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -31,10 +45,27 @@ public class ProviderAvailabilitiesController : Controller
             return NotFound();
         }
 
+        int? providerUserId = HttpContext.Session.GetInt32("UserId");
+
+        if (providerUserId == null)
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var provider = await _context.ServiceProviders
+            .FirstOrDefaultAsync(sp => sp.UserId == providerUserId.Value);
+
+        if (provider == null)
+        {
+            return NotFound();
+        }
+
         var providerAvailability = await _context.ProviderAvailabilities
-            .Include(p => p.ServiceProvider)
+            .Include(pa => pa.ServiceProvider)
                 .ThenInclude(sp => sp.User)
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(pa =>
+                pa.Id == id &&
+                pa.ServiceProviderId == provider.Id);
 
         if (providerAvailability == null)
         {
@@ -44,39 +75,55 @@ public class ProviderAvailabilitiesController : Controller
         return View(providerAvailability);
     }
 
-    // GET: ProviderAvailabilities/Create
-    public async Task<IActionResult> Create()
+    // Add availability
+    public IActionResult Create()
     {
-        ViewBag.Providers = await _context.ServiceProviders
-            .Include(sp => sp.User)
-            .ToListAsync();
+        int? providerUserId = HttpContext.Session.GetInt32("UserId");
+
+        if (providerUserId == null)
+        {
+            return RedirectToAction("Index", "Login");
+        }
 
         return View();
     }
 
-    // POST: ProviderAvailabilities/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Id,ServiceProviderId,DayOfWeek,StartTime,EndTime,IsAvailable")]
+        [Bind("Id,DayOfWeek,StartTime,EndTime,IsAvailable")]
         ProviderAvailability providerAvailability)
     {
+        int? providerUserId = HttpContext.Session.GetInt32("UserId");
+
+        if (providerUserId == null)
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var provider = await _context.ServiceProviders
+            .FirstOrDefaultAsync(sp => sp.UserId == providerUserId.Value);
+
+        if (provider == null)
+        {
+            return NotFound();
+        }
+
         if (ModelState.IsValid)
         {
-            _context.Add(providerAvailability);
+            providerAvailability.ServiceProviderId = provider.Id;
+
+            _context.ProviderAvailabilities.Add(providerAvailability);
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        ViewBag.Providers = await _context.ServiceProviders
-            .Include(sp => sp.User)
-            .ToListAsync();
-
         return View(providerAvailability);
     }
 
-    // GET: ProviderAvailabilities/Edit/5
+    // Edit availability
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -84,27 +131,39 @@ public class ProviderAvailabilitiesController : Controller
             return NotFound();
         }
 
+        int? providerUserId = HttpContext.Session.GetInt32("UserId");
+
+        if (providerUserId == null)
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var provider = await _context.ServiceProviders
+            .FirstOrDefaultAsync(sp => sp.UserId == providerUserId.Value);
+
+        if (provider == null)
+        {
+            return NotFound();
+        }
+
         var providerAvailability = await _context.ProviderAvailabilities
-            .FindAsync(id);
+            .FirstOrDefaultAsync(pa =>
+                pa.Id == id &&
+                pa.ServiceProviderId == provider.Id);
 
         if (providerAvailability == null)
         {
             return NotFound();
         }
 
-        ViewBag.Providers = await _context.ServiceProviders
-            .Include(sp => sp.User)
-            .ToListAsync();
-
         return View(providerAvailability);
     }
 
-    // POST: ProviderAvailabilities/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int? id,
-        [Bind("Id,ServiceProviderId,DayOfWeek,StartTime,EndTime,IsAvailable")]
+        [Bind("Id,DayOfWeek,StartTime,EndTime,IsAvailable")]
         ProviderAvailability providerAvailability)
     {
         if (id != providerAvailability.Id)
@@ -112,34 +171,47 @@ public class ProviderAvailabilitiesController : Controller
             return NotFound();
         }
 
+        int? providerUserId = HttpContext.Session.GetInt32("UserId");
+
+        if (providerUserId == null)
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var provider = await _context.ServiceProviders
+            .FirstOrDefaultAsync(sp => sp.UserId == providerUserId.Value);
+
+        if (provider == null)
+        {
+            return NotFound();
+        }
+
+        var existingAvailability = await _context.ProviderAvailabilities
+            .FirstOrDefaultAsync(pa =>
+                pa.Id == id &&
+                pa.ServiceProviderId == provider.Id);
+
+        if (existingAvailability == null)
+        {
+            return NotFound();
+        }
+
         if (ModelState.IsValid)
         {
-            try
-            {
-                _context.Update(providerAvailability);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProviderAvailabilityExists(providerAvailability.Id))
-                {
-                    return NotFound();
-                }
+            existingAvailability.DayOfWeek = providerAvailability.DayOfWeek;
+            existingAvailability.StartTime = providerAvailability.StartTime;
+            existingAvailability.EndTime = providerAvailability.EndTime;
+            existingAvailability.IsAvailable = providerAvailability.IsAvailable;
 
-                throw;
-            }
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        ViewBag.Providers = await _context.ServiceProviders
-            .Include(sp => sp.User)
-            .ToListAsync();
-
         return View(providerAvailability);
     }
 
-    // GET: ProviderAvailabilities/Delete/5
+    // Delete availability
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -147,10 +219,25 @@ public class ProviderAvailabilitiesController : Controller
             return NotFound();
         }
 
+        int? providerUserId = HttpContext.Session.GetInt32("UserId");
+
+        if (providerUserId == null)
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var provider = await _context.ServiceProviders
+            .FirstOrDefaultAsync(sp => sp.UserId == providerUserId.Value);
+
+        if (provider == null)
+        {
+            return NotFound();
+        }
+
         var providerAvailability = await _context.ProviderAvailabilities
-            .Include(p => p.ServiceProvider)
-                .ThenInclude(sp => sp.User)
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(pa =>
+                pa.Id == id &&
+                pa.ServiceProviderId == provider.Id);
 
         if (providerAvailability == null)
         {
@@ -160,27 +247,42 @@ public class ProviderAvailabilitiesController : Controller
         return View(providerAvailability);
     }
 
-    // POST: ProviderAvailabilities/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        int? providerUserId = HttpContext.Session.GetInt32("UserId");
+
+        if (providerUserId == null)
+        {
+            return RedirectToAction("Index", "Login");
+        }
+
+        var provider = await _context.ServiceProviders
+            .FirstOrDefaultAsync(sp => sp.UserId == providerUserId.Value);
+
+        if (provider == null)
+        {
+            return NotFound();
+        }
+
         var providerAvailability = await _context.ProviderAvailabilities
-            .FindAsync(id);
+            .FirstOrDefaultAsync(pa =>
+                pa.Id == id &&
+                pa.ServiceProviderId == provider.Id);
 
         if (providerAvailability != null)
         {
             _context.ProviderAvailabilities.Remove(providerAvailability);
+
+            await _context.SaveChangesAsync();
         }
 
-        await _context.SaveChangesAsync();
-
         return RedirectToAction(nameof(Index));
-    }
-
-    private bool ProviderAvailabilityExists(int id)
-    {
-        return _context.ProviderAvailabilities
-            .Any(e => e.Id == id);
     }
 }

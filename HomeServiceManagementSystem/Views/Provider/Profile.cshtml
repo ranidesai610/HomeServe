@@ -1,0 +1,230 @@
+﻿@model HomeServiceManagementSystem.Models.ServiceProvider
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<style>
+    .profile-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #198754, #43b581);
+        color: white;
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 30px;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 22px;
+        padding: 30px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.07);
+    }
+
+    .profile-icon {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 45px;
+        margin-bottom: 20px;
+    }
+
+    .info-box {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 18px;
+        margin-bottom: 15px;
+    }
+
+    .info-label {
+        color: #777;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: #172033;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    .service-badge {
+        display: inline-block;
+        background: #e8f5ee;
+        color: #198754;
+        padding: 8px 15px;
+        border-radius: 20px;
+        margin: 5px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container profile-page">
+
+    <div class="profile-header">
+
+        <div class="profile-icon">
+            👤
+        </div>
+
+        <h1 class="fw-bold">
+            @Model.User?.Name
+        </h1>
+
+        <p class="mb-0">
+            Provider Profile
+        </p>
+
+    </div>
+
+    <div class="profile-card">
+
+        <h3 class="fw-bold mb-4">
+            Provider Information
+        </h3>
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Name
+                    </div>
+
+                    <div class="info-value">
+                        @Model.User?.Name
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Email
+                    </div>
+
+                    <div class="info-value">
+                        @Model.User?.Email
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Phone
+                    </div>
+
+                    <div class="info-value">
+                        @Model.Phone
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Address
+                    </div>
+
+                    <div class="info-value">
+                        @Model.Address
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Approval Status
+                    </div>
+
+                    <div class="info-value">
+                        @(Model.IsApproved ? "✅ Approved" : "❌ Not Approved")
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Availability
+                    </div>
+
+                    <div class="info-value">
+                        @(Model.IsAvailable ? "🟢 Available" : "🔴 Not Available")
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <h3 class="fw-bold mb-3">
+            🔧 Services Offered
+        </h3>
+
+        @if (Model.ProviderServices != null &&
+             Model.ProviderServices.Any())
+        {
+            foreach (var providerService in Model.ProviderServices)
+            {
+                <span class="service-badge">
+                    @providerService.Service?.Name
+                </span>
+            }
+        }
+        else
+        {
+            <p class="text-muted">
+                No services assigned.
+            </p>
+        }
+
+        <div class="mt-4">
+
+            <a asp-controller="Provider"
+               asp-action="Index"
+               class="btn btn-secondary">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

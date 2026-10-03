@@ -20,8 +20,8 @@
                     <h4>My Bookings</h4>
                     <p>View customer service bookings.</p>
 
-                    <a asp-controller="Bookings"
-                       asp-action="Index"
+                    <a asp-controller="Provider"
+                       asp-action="Bookings"
                        class="btn btn-primary">
                         View Bookings
                     </a>
@@ -49,14 +49,24 @@
                 <div class="card-body">
                     <h4>My Profile</h4>
                     <p>View your provider information.</p>
-
-                    <a asp-controller="ServiceProviders"
-                       asp-action="Index"
-                       class="btn btn-secondary">
-                        View Profile
-                    </a>
+                    <a asp-controller="Provider"
+   asp-action="Profile"
+   class="btn btn-secondary">
+    View Profile
+</a>
+                 
                 </div>
             </div>
+        </div>
+
+        <div class="text-center mt-4 mb-5">
+
+            <a asp-controller="Provider"
+               asp-action="Logout"
+               class="btn btn-danger">
+                🚪 Logout
+            </a>
+
         </div>
 
     </div>
