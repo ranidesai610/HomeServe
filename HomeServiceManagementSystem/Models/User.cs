@@ -23,10 +23,10 @@ namespace HomeServiceManagementSystem.Models
 
         public ICollection<Booking>? Bookings { get; set; }
 
-        public ICollection<Review>? Reviews { get; set; }
+
 
         public ICollection<Complaint>? Complaints { get; set; }
 
-        public ICollection<Notification>? Notifications { get; set; }
+        
     }
 }

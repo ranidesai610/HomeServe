@@ -414,6 +414,15 @@
 
                     </a>
 
+                    <a asp-controller="Payments"
+   asp-action="Create"
+   asp-route-bookingId="@Model.Id"
+   class="btn btn-success action-btn w-100 mt-3">
+
+    💳 Make Payment
+
+</a>
+
                     <a asp-controller="Bookings"
                        asp-action="Index"
                        class="btn btn-outline-secondary action-btn w-100 mt-3">

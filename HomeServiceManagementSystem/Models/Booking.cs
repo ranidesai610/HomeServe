@@ -46,8 +46,7 @@ namespace HomeServiceManagementSystem.Models
 
         public Invoice? Invoice { get; set; }
 
-        public Review? Review { get; set; }
-
+      
         public ICollection<Complaint>? Complaints { get; set; }
     }
 }

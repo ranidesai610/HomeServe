@@ -32,11 +32,10 @@ namespace HomeServiceManagementSystem.Data
 
         public DbSet<Invoice> Invoices { get; set; }
 
-        public DbSet<Review> Reviews { get; set; }
+
 
         public DbSet<Complaint> Complaints { get; set; }
 
-        public DbSet<Notification> Notifications { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -199,27 +198,7 @@ namespace HomeServiceManagementSystem.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
 
-            // ================================
-            // USER → REVIEWS
-            // ================================
 
-            modelBuilder.Entity<Review>()
-                .HasOne(r => r.User)
-                .WithMany(u => u.Reviews)
-                .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-
-            // ================================
-            // BOOKING → REVIEW
-            // ONE BOOKING = ONE REVIEW
-            // ================================
-
-            modelBuilder.Entity<Review>()
-                .HasOne(r => r.Booking)
-                .WithOne(b => b.Review)
-                .HasForeignKey<Review>(r => r.BookingId)
-                .OnDelete(DeleteBehavior.Restrict);
 
 
             // ================================
@@ -244,15 +223,8 @@ namespace HomeServiceManagementSystem.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            // ================================
-            // USER → NOTIFICATIONS
-            // ================================
-
-            modelBuilder.Entity<Notification>()
-                .HasOne(n => n.User)
-                .WithMany(u => u.Notifications)
-                .HasForeignKey(n => n.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
+
+ 

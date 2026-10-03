@@ -1,0 +1,230 @@
+﻿@model HomeServiceManagementSystem.Models.Invoice
+
+@{
+    ViewData["Title"] = "Invoice";
+}
+
+<style>
+    body {
+        background: #f5f8fc;
+    }
+
+    .invoice-wrapper {
+        max-width: 900px;
+        margin: 50px auto;
+    }
+
+    .invoice-card {
+        background: white;
+        border-radius: 22px;
+        padding: 40px;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+    }
+
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 25px;
+        margin-bottom: 30px;
+    }
+
+    .brand {
+        font-size: 28px;
+        font-weight: 700;
+        color: #2563eb;
+    }
+
+    .invoice-title {
+        font-size: 30px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .invoice-number {
+        color: #6b7280;
+        margin-top: 5px;
+    }
+
+    .info-box {
+        background: #f8fafc;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+    .info-title {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: #111827;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        color: #4b5563;
+    }
+
+    .amount-box {
+        background: #eff6ff;
+        border-radius: 16px;
+        padding: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+    }
+
+    .amount-label {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .amount {
+        font-size: 28px;
+        font-weight: 700;
+        color: #2563eb;
+    }
+
+    .paid {
+        display: inline-block;
+        background: #dcfce7;
+        color: #15803d;
+        padding: 7px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .action-btn {
+        flex: 1;
+        padding: 13px;
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .back-btn {
+        background: #e5e7eb;
+        color: #374151;
+    }
+
+    .print-btn {
+        background: #2563eb;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    @@media print {
+        .actions {
+            display: none;
+        }
+
+        body {
+            background: white;
+        }
+
+        .invoice-card {
+            box-shadow: none;
+        }
+    }
+</style>
+
+<div class="invoice-wrapper">
+    <div class="invoice-card">
+
+        <div class="invoice-header">
+            <div>
+                <div class="brand">🏠 HomeServe</div>
+                <div class="invoice-number">
+                    Invoice #: @Model.InvoiceNumber
+                </div>
+            </div>
+
+            <div class="invoice-title">
+                INVOICE
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Customer Information</div>
+
+            <div class="info-row">
+                <span>Name</span>
+                <strong>@Model.Booking?.User?.Name</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Email</span>
+                <strong>@Model.Booking?.User?.Email</strong>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="info-title">Booking Information</div>
+
+            <div class="info-row">
+                <span>Booking ID</span>
+                <strong>#@Model.BookingId</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Service</span>
+                <strong>@Model.Booking?.Service?.Name</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Provider</span>
+                <strong>@Model.Booking?.ServiceProvider?.User?.Name</strong>
+            </div>
+
+            <div class="info-row">
+                <span>Invoice Date</span>
+                <strong>@Model.InvoiceDate.ToString("dd MMM yyyy")</strong>
+            </div>
+        </div>
+
+        <div class="amount-box">
+            <div>
+                <div class="amount-label">Total Amount</div>
+
+                <div style="margin-top:8px;">
+                    <span class="paid">
+                        ✓ @Model.PaymentStatus
+                    </span>
+                </div>
+            </div>
+
+            <div class="amount">
+                ₹@Model.Amount.ToString("N2")
+            </div>
+        </div>
+
+        <div class="actions">
+
+            <a asp-controller="Bookings"
+               asp-action="Details"
+               asp-route-id="@Model.BookingId"
+               class="action-btn back-btn">
+                ← Back to Booking
+            </a>
+
+            <button onclick="window.print()"
+                    class="action-btn print-btn">
+                🖨 Print Invoice
+            </button>
+
+        </div>
+
+    </div>
+</div>

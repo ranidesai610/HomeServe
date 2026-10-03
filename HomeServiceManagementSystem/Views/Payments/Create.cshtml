@@ -1,0 +1,283 @@
+﻿@model HomeServiceManagementSystem.Models.Booking
+
+@{
+    ViewData["Title"] = "Make Payment";
+}
+
+<style>
+    .payment-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .payment-header {
+        background: linear-gradient(135deg, #198754, #43b581);
+        color: white;
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+        .payment-header h1 {
+            font-weight: 800;
+        }
+
+    .payment-card {
+        background: white;
+        border-radius: 22px;
+        padding: 30px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #172033;
+        margin-bottom: 20px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 14px 0;
+        border-bottom: 1px solid #eef1f5;
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-label {
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    .info-value {
+        color: #172033;
+        font-weight: 700;
+        text-align: right;
+    }
+
+    .amount-box {
+        background: #e9f7ef;
+        border-radius: 18px;
+        padding: 25px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .amount-label {
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    .amount {
+        color: #198754;
+        font-size: 34px;
+        font-weight: 800;
+        margin-top: 5px;
+    }
+
+    .payment-option {
+        border: 1px solid #dee2e6;
+        border-radius: 14px;
+        padding: 15px;
+        margin-bottom: 12px;
+        cursor: pointer;
+    }
+
+        .payment-option:hover {
+            background: #f8f9fa;
+        }
+
+        .payment-option input {
+            margin-right: 10px;
+        }
+
+    .pay-btn {
+        border-radius: 12px;
+        padding: 13px 25px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container payment-page">
+
+    <div class="payment-header">
+
+        <div style="font-size: 45px;">
+            💳
+        </div>
+
+        <h1>Make Payment</h1>
+
+        <p class="mb-0 mt-2">
+            Complete your payment for the selected service.
+        </p>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-lg-5">
+
+            <div class="payment-card">
+
+                <div class="card-title">
+                    📋 Booking Information
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Booking ID
+                    </span>
+
+                    <span class="info-value">
+                        #@Model.Id
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Service
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Service?.Name
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Provider
+                    </span>
+
+                    <span class="info-value">
+                        @Model.ServiceProvider?.User?.Name
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Date
+                    </span>
+
+                    <span class="info-value">
+                        @Model.BookingDate.ToString("dd MMM yyyy")
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Time
+                    </span>
+
+                    <span class="info-value">
+                        @Model.BookingTime
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-7">
+
+            <div class="payment-card">
+
+                <div class="card-title">
+                    💰 Payment Summary
+                </div>
+
+                <div class="amount-box">
+
+                    <div class="amount-label">
+                        Amount to Pay
+                    </div>
+
+                    <div class="amount">
+                        ₹@Model.TotalAmount.ToString("N2")
+                    </div>
+
+                </div>
+
+
+                <form asp-action="Create" method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="bookingId"
+                           value="@Model.Id" />
+
+                    <div class="card-title">
+                        💳 Select Payment Method
+                    </div>
+
+                    <label class="payment-option d-block">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="Cash"
+                               required />
+
+                        💵 Cash on Service
+
+                    </label>
+
+
+                    <label class="payment-option d-block">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="Card"
+                               required />
+
+                        💳 Card
+
+                    </label>
+
+
+                    <label class="payment-option d-block">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="UPI"
+                               required />
+
+                        📱 UPI
+
+                    </label>
+
+
+                    <button type="submit"
+                            class="btn btn-success pay-btn w-100 mt-3">
+
+                        ✓ Complete Payment
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
