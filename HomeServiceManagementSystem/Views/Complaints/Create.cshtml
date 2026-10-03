@@ -1,0 +1,254 @@
+﻿@model HomeServiceManagementSystem.Models.Booking
+
+@{
+    ViewData["Title"] = "Submit Complaint";
+}
+
+<style>
+    .complaint-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .complaint-header {
+        background: linear-gradient(135deg, #dc3545, #f06b78);
+        color: white;
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+        .complaint-header h1 {
+            font-weight: 800;
+        }
+
+    .complaint-card {
+        background: white;
+        border-radius: 22px;
+        padding: 30px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #172033;
+        margin-bottom: 20px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 14px 0;
+        border-bottom: 1px solid #eef1f5;
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-label {
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    .info-value {
+        color: #172033;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .form-label {
+        font-weight: 700;
+        color: #172033;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 12px 15px;
+        border: 1px solid #dce1e8;
+    }
+
+        .form-control:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.12);
+        }
+
+    .submit-btn {
+        border-radius: 12px;
+        padding: 12px 25px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container complaint-page">
+
+    <div class="complaint-header">
+
+        <div style="font-size: 45px;">
+            ⚠️
+        </div>
+
+        <h1>Submit a Complaint</h1>
+
+        <p class="mb-0 mt-2">
+            Tell us about the issue you experienced with your service.
+        </p>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-lg-5">
+
+            <div class="complaint-card">
+
+                <div class="card-title">
+                    📋 Booking Information
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Booking ID
+                    </span>
+
+                    <span class="info-value">
+                        #@Model.Id
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Service
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Service?.Name
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Provider
+                    </span>
+
+                    <span class="info-value">
+                        @Model.ServiceProvider?.User?.Name
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Date
+                    </span>
+
+                    <span class="info-value">
+                        @Model.BookingDate.ToString("dd MMM yyyy")
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Time
+                    </span>
+
+                    <span class="info-value">
+                        @Model.BookingTime
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-7">
+
+            <div class="complaint-card">
+
+                <div class="card-title">
+                    ✍️ Complaint Details
+                </div>
+
+                <form asp-action="Create" method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="bookingId"
+                           value="@Model.Id" />
+
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Complaint Subject
+                        </label>
+
+                        <input type="text"
+                               name="subject"
+                               class="form-control"
+                               placeholder="Example: Service provider arrived late"
+                               required />
+
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Describe Your Issue
+                        </label>
+
+                        <textarea name="description"
+                                  class="form-control"
+                                  rows="7"
+                                  placeholder="Please describe what happened..."
+                                  required></textarea>
+
+                    </div>
+
+
+                    <div class="d-flex gap-2">
+
+                        <button type="submit"
+                                class="btn btn-danger submit-btn">
+
+                            ⚠️ Submit Complaint
+
+                        </button>
+
+                        <a asp-controller="Bookings"
+                           asp-action="Details"
+                           asp-route-id="@Model.Id"
+                           class="btn btn-outline-secondary submit-btn">
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

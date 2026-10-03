@@ -1,4 +1,5 @@
-﻿using HomeServiceManagementSystem.Data;
+﻿
+using HomeServiceManagementSystem.Data;
 using HomeServiceManagementSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +40,9 @@ namespace HomeServiceManagementSystem.Controllers
                 return View(model);
             }
 
+            // Store logged-in user's information in session
             HttpContext.Session.SetInt32("UserId", user.Id);
+            HttpContext.Session.SetString("UserRole", user.Role);
 
             if (user.Role == "Customer")
             {
@@ -61,3 +64,4 @@ namespace HomeServiceManagementSystem.Controllers
         }
     }
 }
+

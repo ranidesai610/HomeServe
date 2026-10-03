@@ -1,7 +1,10 @@
 @model IEnumerable<HomeServiceManagementSystem.Models.Booking>
 
 @{
-    ViewData["Title"] = "My Bookings";
+    ViewData["Title"] = "Bookings";
+
+    int? currentUserId = Context.Session.GetInt32("UserId");
+    bool isAdmin = Context.Session.GetString("UserRole") == "Admin";
 }
 
 <style>
@@ -18,9 +21,9 @@
         margin-bottom: 30px;
     }
 
-    .bookings-header h1 {
-        font-weight: 800;
-    }
+        .bookings-header h1 {
+            font-weight: 800;
+        }
 
     .booking-card {
         background: white;
@@ -31,10 +34,10 @@
         transition: 0.3s;
     }
 
-    .booking-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 14px 32px rgba(0,0,0,0.10);
-    }
+        .booking-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 32px rgba(0,0,0,0.10);
+        }
 
     .service-icon {
         width: 60px;
@@ -51,6 +54,12 @@
         font-size: 21px;
         font-weight: 800;
         color: #172033;
+    }
+
+    .customer-name {
+        font-weight: 700;
+        color: #0d6efd;
+        margin-top: 5px;
     }
 
     .provider-name {
@@ -79,9 +88,10 @@
         color: #0d6efd;
     }
 
-    .view-btn {
+    .view-btn,
+    .delete-btn {
         border-radius: 10px;
-        padding: 9px 18px;
+        padding: 9px 15px;
         font-weight: 600;
     }
 
@@ -102,11 +112,22 @@
 
     <div class="bookings-header">
 
-        <h1>📋 My Bookings</h1>
+        @if (isAdmin)
+        {
+            <h1>📋 Manage Bookings</h1>
 
-        <p class="mb-0 mt-2">
-            View and manage your home service bookings.
-        </p>
+            <p class="mb-0 mt-2">
+                View and manage all customer service bookings.
+            </p>
+        }
+        else
+        {
+            <h1>📋 My Bookings</h1>
+
+            <p class="mb-0 mt-2">
+                View and manage your home service bookings.
+            </p>
+        }
 
     </div>
 
@@ -124,16 +145,8 @@
             </h3>
 
             <p class="text-muted">
-                You haven't booked any home services yet.
+                There are currently no bookings to display.
             </p>
-
-            <a asp-controller="CustomerServices"
-               asp-action="Index"
-               class="btn btn-primary">
-
-                Browse Services →
-
-            </a>
 
         </div>
     }
@@ -160,8 +173,16 @@
                             @booking.Service?.Name
                         </div>
 
+                        @if (isAdmin)
+                        {
+                            <div class="customer-name">
+                                👤 Customer:
+                                @booking.User?.Name
+                            </div>
+                        }
+
                         <div class="provider-name">
-                            👨‍🔧
+                            👨‍🔧 Provider:
                             @booking.ServiceProvider?.User?.Name
                         </div>
 
@@ -198,13 +219,28 @@
 
                     <div class="col-md-2 text-md-end mt-3 mt-md-0">
 
-                        <a asp-action="Details"
-                           asp-route-id="@booking.Id"
-                           class="btn btn-primary view-btn">
+                        <div class="d-flex flex-column gap-2 align-items-md-end">
 
-                            View Details →
+                            <a asp-action="Details"
+                               asp-route-id="@booking.Id"
+                               class="btn btn-primary view-btn">
 
-                        </a>
+                                View Details →
+
+                            </a>
+
+                            @if (isAdmin)
+                            {
+                                <a asp-action="Delete"
+                                   asp-route-id="@booking.Id"
+                                   class="btn btn-outline-danger delete-btn">
+
+                                    🗑 Delete
+
+                                </a>
+                            }
+
+                        </div>
 
                     </div>
 

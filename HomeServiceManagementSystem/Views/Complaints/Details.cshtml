@@ -1,0 +1,288 @@
+﻿@model HomeServiceManagementSystem.Models.Complaint
+
+@{
+    ViewData["Title"] = "Complaint Details";
+}
+
+<style>
+    .details-page {
+        margin-top: 40px;
+        margin-bottom: 60px;
+    }
+
+    .details-header {
+        background: linear-gradient(135deg, #dc3545, #f06b78);
+        color: white;
+        border-radius: 24px;
+        padding: 40px;
+        margin-bottom: 30px;
+    }
+
+        .details-header h1 {
+            font-weight: 800;
+        }
+
+    .complaint-card {
+        background: white;
+        border-radius: 22px;
+        padding: 30px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #172033;
+        margin-bottom: 20px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 14px 0;
+        border-bottom: 1px solid #eef1f5;
+    }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+    .info-label {
+        color: #6c757d;
+        font-weight: 600;
+    }
+
+    .info-value {
+        color: #172033;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 8px 15px;
+        border-radius: 20px;
+        background: #fff3cd;
+        color: #856404;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .description-box {
+        background: #f8f9fc;
+        border-radius: 15px;
+        padding: 20px;
+        color: #495057;
+        line-height: 1.7;
+    }
+
+    .action-btn {
+        border-radius: 12px;
+        padding: 12px 22px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container details-page">
+
+    <div class="details-header">
+
+        <h1>⚠️ Complaint Details</h1>
+
+        <p class="mb-0 mt-2">
+            Review the customer's complaint and take appropriate action.
+        </p>
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-lg-7">
+
+            <div class="complaint-card">
+
+                <div class="card-title">
+                    👤 Customer Information
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Customer Name
+                    </span>
+
+                    <span class="info-value">
+                        @Model.User?.Name
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Customer Email
+                    </span>
+
+                    <span class="info-value">
+                        @Model.User?.Email
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="complaint-card">
+
+                <div class="card-title">
+                    📋 Complaint Information
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Complaint ID
+                    </span>
+
+                    <span class="info-value">
+                        #@Model.Id
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Subject
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Subject
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Status
+                    </span>
+
+                    <span class="info-value">
+
+                        <span class="status-badge">
+                            @Model.Status
+                        </span>
+
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Submitted On
+                    </span>
+
+                    <span class="info-value">
+                        @Model.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="complaint-card">
+
+                <div class="card-title">
+                    📝 Customer Description
+                </div>
+
+                <div class="description-box">
+                    @Model.Description
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-5">
+
+            <div class="complaint-card">
+
+                <div class="card-title">
+                    🏠 Booking Information
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Booking ID
+                    </span>
+
+                    <span class="info-value">
+                        #@Model.BookingId
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Service
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Booking?.Service?.Name
+                    </span>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span class="info-label">
+                        Provider
+                    </span>
+
+                    <span class="info-value">
+                        @Model.Booking?.ServiceProvider?.User?.Name
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="complaint-card">
+
+                <div class="card-title">
+                    ⚙️ Admin Actions
+                </div>
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning action-btn w-100">
+
+                    ✏️ Update Complaint Status
+
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary action-btn w-100 mt-3">
+
+                    ← Back to Complaints
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

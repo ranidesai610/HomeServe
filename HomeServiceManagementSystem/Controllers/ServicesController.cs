@@ -1,5 +1,3 @@
-
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HomeServiceManagementSystem.Models;
@@ -14,13 +12,17 @@ public class ServicesController : Controller
         _context = context;
     }
 
-    // GET: SERVICES
-    public async Task<IActionResult> Index()    
+    // GET: Services
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Services.ToListAsync());
+        var services = await _context.Services
+            .Include(s => s.ServiceCategory)
+            .ToListAsync();
+
+        return View(services);
     }
 
-    // GET: SERVICES/Details/5
+    // GET: Services/Details/5
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
@@ -29,7 +31,9 @@ public class ServicesController : Controller
         }
 
         var service = await _context.Services
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .Include(s => s.ServiceCategory)
+            .FirstOrDefaultAsync(s => s.Id == id);
+
         if (service == null)
         {
             return NotFound();
@@ -38,29 +42,39 @@ public class ServicesController : Controller
         return View(service);
     }
 
-    // GET: SERVICES/Create
-    public IActionResult Create()
+    // GET: Services/Create
+    public async Task<IActionResult> Create()
     {
+        ViewBag.ServiceCategories = await _context.ServiceCategories
+            .OrderBy(c => c.Name)
+            .ToListAsync();
+
         return View();
     }
 
-    // POST: SERVICES/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Services/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] Service service)
+    public async Task<IActionResult> Create(
+        [Bind("Id,Name,Description,Price,ServiceCategoryId")]
+        Service service)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(service);
+            _context.Services.Add(service);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+        ViewBag.ServiceCategories = await _context.ServiceCategories
+            .OrderBy(c => c.Name)
+            .ToListAsync();
+
         return View(service);
     }
 
-    // GET: SERVICES/Edit/5
+    // GET: Services/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -69,19 +83,26 @@ public class ServicesController : Controller
         }
 
         var service = await _context.Services.FindAsync(id);
+
         if (service == null)
         {
             return NotFound();
         }
+
+        ViewBag.ServiceCategories = await _context.ServiceCategories
+            .OrderBy(c => c.Name)
+            .ToListAsync();
+
         return View(service);
     }
 
-    // POST: SERVICES/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // POST: Services/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Description,Price")] Service service)
+    public async Task<IActionResult> Edit(
+        int? id,
+        [Bind("Id,Name,Description,Price,ServiceCategoryId")]
+        Service service)
     {
         if (id != service.Id)
         {
@@ -101,17 +122,21 @@ public class ServicesController : Controller
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
+
             return RedirectToAction(nameof(Index));
         }
+
+        ViewBag.ServiceCategories = await _context.ServiceCategories
+            .OrderBy(c => c.Name)
+            .ToListAsync();
+
         return View(service);
     }
 
-    // GET: SERVICES/Delete/5
+    // GET: Services/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
@@ -120,7 +145,9 @@ public class ServicesController : Controller
         }
 
         var service = await _context.Services
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .Include(s => s.ServiceCategory)
+            .FirstOrDefaultAsync(s => s.Id == id);
+
         if (service == null)
         {
             return NotFound();
@@ -129,22 +156,32 @@ public class ServicesController : Controller
         return View(service);
     }
 
-    // POST: SERVICES/Delete/5
+    // POST: Services/Delete/5
     [HttpPost, ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var service = await _context.Services.FindAsync(id);
-        if (service != null)
+        if (id == null)
         {
-            _context.Services.Remove(service);
+            return NotFound();
         }
 
+        var service = await _context.Services
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (service == null)
+        {
+            return NotFound();
+        }
+
+        _context.Services.Remove(service);
+
         await _context.SaveChangesAsync();
+
         return RedirectToAction(nameof(Index));
     }
 
-    private bool ServiceExists(int? id)
+    private bool ServiceExists(int id)
     {
         return _context.Services.Any(e => e.Id == id);
     }

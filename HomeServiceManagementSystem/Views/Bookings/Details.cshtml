@@ -1,7 +1,10 @@
+
 @model HomeServiceManagementSystem.Models.Booking
 
 @{
-    ViewData["Title"] = "Booking Confirmed";
+    ViewData["Title"] = "Booking Details";
+
+    bool isAdmin = Context.Session.GetString("UserRole") == "Admin";
 }
 
 <style>
@@ -58,9 +61,9 @@
         border-bottom: 1px solid #eef1f5;
     }
 
-    .info-row:last-child {
-        border-bottom: none;
-    }
+        .info-row:last-child {
+            border-bottom: none;
+        }
 
     .info-label {
         color: #6c757d;
@@ -117,11 +120,22 @@
             ✓
         </div>
 
-        <h1>Booking Confirmed!</h1>
+        @if (isAdmin)
+        {
+            <h1>Booking Details</h1>
 
-        <p class="mb-0 mt-2">
-            Your service booking has been successfully created.
-        </p>
+            <p class="mb-0 mt-2">
+                View complete information about this customer booking.
+            </p>
+        }
+        else
+        {
+            <h1>Booking Confirmed!</h1>
+
+            <p class="mb-0 mt-2">
+                Your service booking has been successfully created.
+            </p>
+        }
 
     </div>
 
@@ -129,10 +143,46 @@
 
         <div class="col-lg-7">
 
+            @if (isAdmin)
+            {
+                <div class="booking-card">
+
+                    <div class="card-title">
+                        👤 Customer Information
+                    </div>
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Customer Name
+                        </span>
+
+                        <span class="info-value">
+                            @Model.User?.Name
+                        </span>
+
+                    </div>
+
+                    <div class="info-row">
+
+                        <span class="info-label">
+                            Customer Email
+                        </span>
+
+                        <span class="info-value">
+                            @Model.User?.Email
+                        </span>
+
+                    </div>
+
+                </div>
+            }
+
+
             <div class="booking-card">
 
                 <div class="card-title">
-                    🏠 Your Service
+                    🏠 Service Information
                 </div>
 
                 <div class="info-row">
@@ -326,22 +376,52 @@
 
             <div class="booking-card">
 
-                <a asp-controller="CustomerServices"
-                   asp-action="Index"
-                   class="btn btn-primary action-btn w-100">
+                @if (isAdmin)
+                {
+                    <a asp-controller="Bookings"
+                       asp-action="Index"
+                       class="btn btn-primary action-btn w-100">
 
-                    ← Browse More Services
+                        ← Back to Manage Bookings
 
-                </a>
+                    </a>
 
-                <a asp-controller="Bookings"
-                   asp-action="Index"
-                   class="btn btn-outline-secondary action-btn w-100 mt-3">
+                    <a asp-controller="Bookings"
+                       asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning action-btn w-100 mt-3">
 
-                    📋 View My Bookings
+                        ✏️ Edit Booking
 
-                </a>
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="CustomerServices"
+                       asp-action="Index"
+                       class="btn btn-primary action-btn w-100">
 
+                        ← Browse More Services
+
+                    </a>
+
+                    <a asp-controller="Complaints"
+                       asp-action="Create"
+                       asp-route-bookingId="@Model.Id"
+                       class="btn btn-danger action-btn w-100 mt-3">
+
+                        ⚠️ Submit Complaint
+
+                    </a>
+
+                    <a asp-controller="Bookings"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary action-btn w-100 mt-3">
+
+                        📋 View My Bookings
+
+                    </a>
+                }
             </div>
 
         </div>
@@ -349,3 +429,4 @@
     </div>
 
 </div>
+

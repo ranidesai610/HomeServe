@@ -15,27 +15,55 @@ namespace HomeServiceManagementSystem.Controllers
         }
 
         // GET: Bookings
-
         public async Task<IActionResult> Index()
         {
-            int? customerId = HttpContext.Session.GetInt32("UserId");
+            int? userId = HttpContext.Session.GetInt32("UserId");
 
-            if (customerId == null)
+            if (userId == null)
             {
                 return RedirectToAction("Index", "Login");
             }
 
-            var bookings = await _context.Bookings
-                .Where(b => b.UserId == customerId.Value)
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Id == userId.Value);
+
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            IQueryable<Booking> query = _context.Bookings
+                .Include(b => b.User)
                 .Include(b => b.Service)
                 .Include(b => b.ServiceProvider)
                     .ThenInclude(sp => sp.User)
-                .Include(b => b.Address)
-                .OrderByDescending(b => b.CreatedAt)
-                .ToListAsync();
+                .Include(b => b.Address);
 
-            return View(bookings);
+            // Admin can see all bookings
+            if (user.Role == "Admin")
+            {
+                var allBookings = await query
+                    .OrderByDescending(b => b.CreatedAt)
+                    .ToListAsync();
+
+                return View(allBookings);
+            }
+
+            // Customer can see only their own bookings
+            if (user.Role == "Customer")
+            {
+                var customerBookings = await query
+                    .Where(b => b.UserId == userId.Value)
+                    .OrderByDescending(b => b.CreatedAt)
+                    .ToListAsync();
+
+                return View(customerBookings);
+            }
+
+            // Providers should use their own Provider dashboard
+            return RedirectToAction("Index", "Provider");
         }
+
         // GET: Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -45,6 +73,7 @@ namespace HomeServiceManagementSystem.Controllers
             }
 
             var booking = await _context.Bookings
+                .Include(b => b.User)
                 .Include(b => b.Service)
                 .Include(b => b.ServiceProvider)
                     .ThenInclude(sp => sp.User)
@@ -321,6 +350,7 @@ namespace HomeServiceManagementSystem.Controllers
         }
 
         // GET: Bookings/Edit/5
+        // GET: Bookings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -328,7 +358,13 @@ namespace HomeServiceManagementSystem.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.FindAsync(id);
+            var booking = await _context.Bookings
+                .Include(b => b.User)
+                .Include(b => b.Service)
+                .Include(b => b.ServiceProvider)
+                    .ThenInclude(sp => sp.User)
+                .Include(b => b.Address)
+                .FirstOrDefaultAsync(b => b.Id == id);
 
             if (booking == null)
             {
@@ -339,36 +375,34 @@ namespace HomeServiceManagementSystem.Controllers
         }
 
         // POST: Bookings/Edit/5
+        // POST: Bookings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Booking booking)
+        public async Task<IActionResult> Edit(
+            int id,
+            DateTime bookingDate,
+            string bookingTime,
+            string status,
+            decimal totalAmount,
+            string? description)
         {
-            if (id != booking.Id)
+            var booking = await _context.Bookings
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (booking == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(booking);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookingExists(booking.Id))
-                    {
-                        return NotFound();
-                    }
+            booking.BookingDate = bookingDate;
+            booking.BookingTime = bookingTime;
+            booking.Status = status;
+            booking.TotalAmount = totalAmount;
+            booking.Description = description;
 
-                    throw;
-                }
+            await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View(booking);
+            return RedirectToAction(nameof(Details), new { id = booking.Id });
         }
 
         // GET: Bookings/Delete/5

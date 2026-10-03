@@ -1,36 +1,131 @@
 ﻿@model List<HomeServiceManagementSystem.Models.Service>
 
-<h1>Available Services</h1>
+@{
+    ViewData["Title"] = "Manage Services";
+}
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
+<div class="container mt-4">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <tbody>
-        @foreach (var service in Model)
-        {
-            <tr>
-                <td>@service.Id</td>
-                <td>@service.Name</td>
-                <td>@service.Description</td>
-                <td>₹@service.Price</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@service.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@service.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@service.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <div>
+            <h1>Manage Services</h1>
+            <p class="text-muted">
+                Add, edit and manage the services available to customers.
+            </p>
+        </div>
+
+        <div>
+            <a asp-controller="Admin"
+               asp-action="Index"
+               class="btn btn-secondary me-2">
+                Back to Dashboard
+            </a>
+
+            <a asp-action="Create"
+               class="btn btn-primary">
+                + Add New Service
+            </a>
+        </div>
+
+    </div>
+
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Service</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var service in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @service.Id
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        @service.Name
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    @service.Description
+                                </td>
+
+                                <td>
+                                    @if (service.ServiceCategory != null)
+                                    {
+                                        <span class="badge bg-info text-dark">
+                                            @service.ServiceCategory.Name
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            No Category
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <strong>
+                                        ₹@service.Price
+                                    </strong>
+                                </td>
+
+                                <td>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@service.Id"
+                                       class="btn btn-sm btn-warning">
+                                        Edit
+                                    </a>
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@service.Id"
+                                       class="btn btn-sm btn-info">
+                                        Details
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@service.Id"
+                                       class="btn btn-sm btn-danger">
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
