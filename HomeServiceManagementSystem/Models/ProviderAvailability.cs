@@ -12,7 +12,7 @@ namespace HomeServiceManagementSystem.Models
         public ServiceProvider? ServiceProvider { get; set; }
 
         [Required]
-        public DateTime AvailableDate { get; set; }
+        public string DayOfWeek { get; set; }
 
         [Required]
         public string StartTime { get; set; }

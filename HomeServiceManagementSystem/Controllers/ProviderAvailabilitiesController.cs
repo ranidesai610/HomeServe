@@ -7,7 +7,7 @@ public class ProviderAvailabilitiesController : Controller
 {
     private readonly ApplicationDbContext _context;
 
-public ProviderAvailabilitiesController(ApplicationDbContext context)
+    public ProviderAvailabilitiesController(ApplicationDbContext context)
     {
         _context = context;
     }
@@ -17,6 +17,7 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
     {
         var availabilities = await _context.ProviderAvailabilities
             .Include(p => p.ServiceProvider)
+                .ThenInclude(sp => sp.User)
             .ToListAsync();
 
         return View(availabilities);
@@ -30,21 +31,26 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
             return NotFound();
         }
 
-        var provideravailability = await _context.ProviderAvailabilities
+        var providerAvailability = await _context.ProviderAvailabilities
             .Include(p => p.ServiceProvider)
+                .ThenInclude(sp => sp.User)
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (provideravailability == null)
+        if (providerAvailability == null)
         {
             return NotFound();
         }
 
-        return View(provideravailability);
+        return View(providerAvailability);
     }
 
     // GET: ProviderAvailabilities/Create
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
+        ViewBag.Providers = await _context.ServiceProviders
+            .Include(sp => sp.User)
+            .ToListAsync();
+
         return View();
     }
 
@@ -52,18 +58,22 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(
-        [Bind("Id,ServiceProviderId,AvailableDate,StartTime,EndTime,IsAvailable")]
-    ProviderAvailability provideravailability)
+        [Bind("Id,ServiceProviderId,DayOfWeek,StartTime,EndTime,IsAvailable")]
+        ProviderAvailability providerAvailability)
     {
         if (ModelState.IsValid)
         {
-            _context.Add(provideravailability);
+            _context.Add(providerAvailability);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
 
-        return View(provideravailability);
+        ViewBag.Providers = await _context.ServiceProviders
+            .Include(sp => sp.User)
+            .ToListAsync();
+
+        return View(providerAvailability);
     }
 
     // GET: ProviderAvailabilities/Edit/5
@@ -74,15 +84,19 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
             return NotFound();
         }
 
-        var provideravailability = await _context.ProviderAvailabilities
+        var providerAvailability = await _context.ProviderAvailabilities
             .FindAsync(id);
 
-        if (provideravailability == null)
+        if (providerAvailability == null)
         {
             return NotFound();
         }
 
-        return View(provideravailability);
+        ViewBag.Providers = await _context.ServiceProviders
+            .Include(sp => sp.User)
+            .ToListAsync();
+
+        return View(providerAvailability);
     }
 
     // POST: ProviderAvailabilities/Edit/5
@@ -90,10 +104,10 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
         int? id,
-        [Bind("Id,ServiceProviderId,AvailableDate,StartTime,EndTime,IsAvailable")]
-    ProviderAvailability provideravailability)
+        [Bind("Id,ServiceProviderId,DayOfWeek,StartTime,EndTime,IsAvailable")]
+        ProviderAvailability providerAvailability)
     {
-        if (id != provideravailability.Id)
+        if (id != providerAvailability.Id)
         {
             return NotFound();
         }
@@ -102,12 +116,12 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
         {
             try
             {
-                _context.Update(provideravailability);
+                _context.Update(providerAvailability);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProviderAvailabilityExists(provideravailability.Id))
+                if (!ProviderAvailabilityExists(providerAvailability.Id))
                 {
                     return NotFound();
                 }
@@ -118,7 +132,11 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
             return RedirectToAction(nameof(Index));
         }
 
-        return View(provideravailability);
+        ViewBag.Providers = await _context.ServiceProviders
+            .Include(sp => sp.User)
+            .ToListAsync();
+
+        return View(providerAvailability);
     }
 
     // GET: ProviderAvailabilities/Delete/5
@@ -129,16 +147,17 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
             return NotFound();
         }
 
-        var provideravailability = await _context.ProviderAvailabilities
+        var providerAvailability = await _context.ProviderAvailabilities
             .Include(p => p.ServiceProvider)
+                .ThenInclude(sp => sp.User)
             .FirstOrDefaultAsync(m => m.Id == id);
 
-        if (provideravailability == null)
+        if (providerAvailability == null)
         {
             return NotFound();
         }
 
-        return View(provideravailability);
+        return View(providerAvailability);
     }
 
     // POST: ProviderAvailabilities/Delete/5
@@ -146,12 +165,12 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var provideravailability = await _context.ProviderAvailabilities
+        var providerAvailability = await _context.ProviderAvailabilities
             .FindAsync(id);
 
-        if (provideravailability != null)
+        if (providerAvailability != null)
         {
-            _context.ProviderAvailabilities.Remove(provideravailability);
+            _context.ProviderAvailabilities.Remove(providerAvailability);
         }
 
         await _context.SaveChangesAsync();
@@ -159,9 +178,9 @@ public ProviderAvailabilitiesController(ApplicationDbContext context)
         return RedirectToAction(nameof(Index));
     }
 
-    private bool ProviderAvailabilityExists(int? id)
+    private bool ProviderAvailabilityExists(int id)
     {
-        return _context.ProviderAvailabilities.Any(e => e.Id == id);
+        return _context.ProviderAvailabilities
+            .Any(e => e.Id == id);
     }
-
 }

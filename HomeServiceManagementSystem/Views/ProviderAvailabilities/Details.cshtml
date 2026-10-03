@@ -1,59 +1,134 @@
 @model HomeServiceManagementSystem.Models.ProviderAvailability
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Availability Details";
 }
 
-<h1>Details</h1>
+<div class="container py-5">
 
-<div>
-    <h4>ProviderAvailability</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ServiceProviderId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ServiceProviderId)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ServiceProvider)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ServiceProvider)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvailableDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvailableDate)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsAvailable)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsAvailable)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="mb-4">
+        <a asp-action="Index"
+           class="text-decoration-none text-secondary">
+            ← Back to Availability
+        </a>
+
+        <h2 class="fw-bold mt-3 mb-1">
+            Availability Details
+        </h2>
+
+        <p class="text-muted">
+            View the weekly schedule of this service provider.
+        </p>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-body p-4 p-md-5">
+
+            <!-- Provider -->
+            <div class="mb-4">
+                <small class="text-muted d-block mb-1">
+                    Service Provider
+                </small>
+
+                <h4 class="fw-bold mb-1">
+                    @(Model.ServiceProvider?.User?.Name
+                        ?? "Unknown Provider")
+                </h4>
+
+                <small class="text-muted">
+                    Provider ID: @Model.ServiceProviderId
+                </small>
+            </div>
+
+            <hr />
+
+            <div class="row g-4 mt-2">
+
+                <!-- Day -->
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-3">
+                        <small class="text-muted d-block">
+                            Day
+                        </small>
+
+                        <span class="fw-semibold">
+                            @Model.DayOfWeek
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Start Time -->
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-3">
+                        <small class="text-muted d-block">
+                            Start Time
+                        </small>
+
+                        <span class="fw-semibold">
+                            @Model.StartTime
+                        </span>
+                    </div>
+                </div>
+
+                <!-- End Time -->
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-3">
+                        <small class="text-muted d-block">
+                            End Time
+                        </small>
+
+                        <span class="fw-semibold">
+                            @Model.EndTime
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="col-12">
+
+                    <div class="p-3 bg-light rounded-3">
+
+                        <small class="text-muted d-block mb-2">
+                            Availability Status
+                        </small>
+
+                        @if (Model.IsAvailable)
+                        {
+                            <span class="badge bg-success px-3 py-2">
+                                Available
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger px-3 py-2">
+                                Not Available
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="mt-4 d-flex gap-2">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-primary px-4">
+                    Edit Availability
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-light px-4">
+                    Back to List
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>

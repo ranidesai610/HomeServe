@@ -263,8 +263,9 @@ namespace HomeServiceManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AvailableDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EndTime")
                         .IsRequired()

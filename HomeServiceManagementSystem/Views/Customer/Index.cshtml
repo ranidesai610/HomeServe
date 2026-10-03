@@ -49,12 +49,24 @@
                     <h4>Profile</h4>
                     <p>View your account information.</p>
 
-                    <button class="btn btn-secondary">
+                    <a asp-controller="Customer"
+                       asp-action="Profile"
+                       class="btn btn-secondary">
                         My Profile
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
+        <div class="text-center mt-4">
+
+            <a asp-controller="Customer"
+               asp-action="Logout"
+               class="btn btn-danger">
+                🚪 Logout
+            </a>
+
+        </div>
+
 
     </div>
 

@@ -39,6 +39,8 @@ namespace HomeServiceManagementSystem.Controllers
                 return View(model);
             }
 
+            HttpContext.Session.SetInt32("UserId", user.Id);
+
             if (user.Role == "Customer")
             {
                 return RedirectToAction("Index", "Customer");

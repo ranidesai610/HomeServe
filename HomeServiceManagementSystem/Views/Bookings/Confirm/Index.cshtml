@@ -34,13 +34,14 @@
     .review-row {
         display: flex;
         justify-content: space-between;
+        gap: 20px;
         padding: 12px 0;
         border-bottom: 1px solid #eef1f5;
     }
 
-    .review-row:last-child {
-        border-bottom: none;
-    }
+        .review-row:last-child {
+            border-bottom: none;
+        }
 
     .review-label {
         color: #6c757d;
@@ -79,6 +80,7 @@
 
 <div class="container confirm-page">
 
+  
     <div class="confirm-header">
         <h1 class="fw-bold">
             📋 Review Your Booking
@@ -93,35 +95,48 @@
 
         <div class="col-md-7">
 
+            <!-- Provider and Service -->
             <div class="review-card">
 
                 <div class="review-title">
-                    👨‍🔧 Provider Details
+                    👨‍🔧 Service Details
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">Provider ID</span>
+                    <span class="review-label">
+                        Service
+                    </span>
+
                     <span class="review-value">
-                        @ViewBag.ProviderId
+                        @ViewBag.ServiceName
                     </span>
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">Service ID</span>
+                    <span class="review-label">
+                        Provider
+                    </span>
+
                     <span class="review-value">
-                        @ViewBag.ServiceId
+                        @ViewBag.ProviderName
                     </span>
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">Date</span>
+                    <span class="review-label">
+                        Date
+                    </span>
+
                     <span class="review-value">
                         @ViewBag.BookingDate
                     </span>
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">Time</span>
+                    <span class="review-label">
+                        Time
+                    </span>
+
                     <span class="review-value">
                         @ViewBag.BookingTime
                     </span>
@@ -129,6 +144,7 @@
 
             </div>
 
+            <!-- Address -->
             <div class="review-card">
 
                 <div class="review-title">
@@ -136,42 +152,60 @@
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">House / Flat</span>
+                    <span class="review-label">
+                        House / Flat
+                    </span>
+
                     <span class="review-value">
                         @ViewBag.HouseNumber
                     </span>
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">Street</span>
+                    <span class="review-label">
+                        Street
+                    </span>
+
                     <span class="review-value">
                         @ViewBag.Street
                     </span>
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">Area</span>
+                    <span class="review-label">
+                        Area
+                    </span>
+
                     <span class="review-value">
                         @ViewBag.Area
                     </span>
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">City</span>
+                    <span class="review-label">
+                        City
+                    </span>
+
                     <span class="review-value">
                         @ViewBag.City
                     </span>
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">State</span>
+                    <span class="review-label">
+                        State
+                    </span>
+
                     <span class="review-value">
                         @ViewBag.State
                     </span>
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">Pincode</span>
+                    <span class="review-label">
+                        Pincode
+                    </span>
+
                     <span class="review-value">
                         @ViewBag.Pincode
                     </span>
@@ -190,7 +224,9 @@
                 </div>
 
                 <div class="review-row">
-                    <span class="review-label">Description</span>
+                    <span class="review-label">
+                        Description
+                    </span>
 
                     <span class="review-value">
                         @(ViewBag.Description ?? "No description")
@@ -204,72 +240,74 @@
                     </div>
 
                     <div class="amount">
-                        ₹ Service Price
+                        ₹ @ViewBag.ServicePrice
                     </div>
 
                 </div>
 
-               <form asp-controller="Bookings"
-      asp-action="Confirm"
-      method="post">
+                <!-- Confirm Booking -->
+                <form asp-controller="Bookings"
+                      asp-action="Confirm"
+                      method="post">
 
-    @Html.AntiForgeryToken()
+                    @Html.AntiForgeryToken()
 
-    <input type="hidden"
-           name="providerId"
-           value="@ViewBag.ProviderId" />
+                    <input type="hidden"
+                           name="providerId"
+                           value="@ViewBag.ProviderId" />
 
-    <input type="hidden"
-           name="serviceId"
-           value="@ViewBag.ServiceId" />
+                    <input type="hidden"
+                           name="serviceId"
+                           value="@ViewBag.ServiceId" />
 
-    <input type="hidden"
-           name="bookingDate"
-           value="@ViewBag.BookingDate" />
+                    <input type="hidden"
+                           name="bookingDate"
+                           value="@ViewBag.BookingDate" />
 
-    <input type="hidden"
-           name="bookingTime"
-           value="@ViewBag.BookingTime" />
+                    <input type="hidden"
+                           name="bookingTime"
+                           value="@ViewBag.BookingTime" />
 
-    <input type="hidden"
-           name="description"
-           value="@ViewBag.Description" />
+                    <input type="hidden"
+                           name="description"
+                           value="@ViewBag.Description" />
 
-    <input type="hidden"
-           name="houseNumber"
-           value="@ViewBag.HouseNumber" />
+                    <input type="hidden"
+                           name="houseNumber"
+                           value="@ViewBag.HouseNumber" />
 
-    <input type="hidden"
-           name="street"
-           value="@ViewBag.Street" />
+                    <input type="hidden"
+                           name="street"
+                           value="@ViewBag.Street" />
 
-    <input type="hidden"
-           name="area"
-           value="@ViewBag.Area" />
+                    <input type="hidden"
+                           name="area"
+                           value="@ViewBag.Area" />
 
-    <input type="hidden"
-           name="city"
-           value="@ViewBag.City" />
+                    <input type="hidden"
+                           name="city"
+                           value="@ViewBag.City" />
 
-    <input type="hidden"
-           name="state"
-           value="@ViewBag.State" />
+                    <input type="hidden"
+                           name="state"
+                           value="@ViewBag.State" />
 
-    <input type="hidden"
-           name="pincode"
-           value="@ViewBag.Pincode" />
+                    <input type="hidden"
+                           name="pincode"
+                           value="@ViewBag.Pincode" />
 
-    <button type="submit"
-            class="btn btn-success confirm-btn">
-        ✓ Confirm Booking
-    </button>
+                    <button type="submit"
+                            class="btn btn-success confirm-btn">
+                        ✓ Confirm Booking
+                    </button>
 
-</form>
+                </form>
 
             </div>
 
         </div>
 
     </div>
+    
 
 </div>
